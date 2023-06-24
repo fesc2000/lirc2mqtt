@@ -34,7 +34,7 @@ This is an interface that connects [LIRC](www.lirc.org) to MQTT.
 Payload is the repeat counter.
 
 
-### Send
+### Send (option 1)
 
 `lirc/set/<remote>/<button>`
 
@@ -44,6 +44,19 @@ Payload can be one of:
 * `START` or `STOP` (start/stop continuous button press)
 * An integer number (repeat count)
 
+### Send (option 2)
+
+`lirc/set/<remote>/<action>[/<count>]`
+
+Where action is one of
+
+* SEND_ONCE
+* SEND_START
+* SEND_STOP
+
+count is the optional repeat count for SEND_ONCE.
+
+Payload is the button name.
 
 ## License
 

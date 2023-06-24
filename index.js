@@ -92,16 +92,31 @@ mqtt.on('message', (topic, payload) => {
         return;
     }
 
-    const [, , remote, key] = topic.split('/');
+    const [, , remote, val, opt] = topic.split('/');
     let repeats = 0;
     let cmd = 'SEND_ONCE';
+    let key = val;
 
-    if (payload.toUpperCase() === 'START') {
-        cmd = 'SEND_START';
-    } else if (payload.toUpperCase() === 'STOP') {
-        cmd = 'SEND_STOP';
-    } else if (payload) {
-        repeats = parseInt(payload, 10) || 0;
+    log.debug('mqtt :', remote, val, opt, payload);
+
+    if ((val == 'SEND_ONCE') || (val == 'SEND_START') || (val == 'SEND_STOP'))
+    {
+	cmd = val;
+	key = payload;
+
+	if (opt) {
+	    repeats = parseInt(opt, 10) || 0;
+	}
+    }
+    else
+    {
+	if (payload.toUpperCase() === 'START') {
+	    cmd = 'SEND_START';
+	} else if (payload.toUpperCase() === 'STOP') {
+	    cmd = 'SEND_STOP';
+	} else if (payload) {
+	    repeats = parseInt(payload, 10) || 0;
+	}
     }
 
     if (repeats) {
